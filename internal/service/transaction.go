@@ -6,7 +6,6 @@ import (
 	database "go-ledger/internal/db"
 	"go-ledger/pkg/models"
 	"time"
-	// Assuming you have a package that initializes and exports your DB connection
 )
 
 func CreateTransaction(req models.TransactionRequest) (*models.Transaction, error) {

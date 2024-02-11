@@ -1,3 +1,30 @@
+definitions:
+  models.ActionType:
+    enum:
+    - add
+    - sub
+    - adj
+    type: string
+    x-enum-varnames:
+    - ActionAdd
+    - ActionSub
+    - ActionAdjust
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Transaction:
+    properties:
+      action:
+        $ref: '#/definitions/models.ActionType'
+      amount:
+        type: number
+      created_at:
+        type: string
+      id:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
@@ -18,4 +45,34 @@ paths:
       summary: Pong
       tags:
       - example
+  /transaction:
+    post:
+      consumes:
+      - application/json
+      description: Adds a new transaction to the database
+      parameters:
+      - description: Transaction
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/models.Transaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Transaction'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a new transaction
+      tags:
+      - transactions
 swagger: "2.0"

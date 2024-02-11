@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // serveCmd represents the serve command
@@ -30,6 +32,15 @@ func startServer() {
 		})
 	})
 
-	// Start the server on port 8080 (or any port you prefer)
-	r.Run(":8080") // listen and serve on 0.0.0.0:8080
+	// Read the server port from the configuration
+	port := viper.GetString("serverPort")
+	if port == "" {
+		port = "8080" // Default to port 8080 if not specified
+	}
+	fmt.Printf("Starting server on port %s\n", port)
+
+	// Start the server on the configured port and handle any errors
+	if err := r.Run(":" + port); err != nil {
+		fmt.Printf("Error starting server: %s\n", err)
+	}
 }

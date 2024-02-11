@@ -1,19 +1,23 @@
-CREATE TYPE action_type AS ENUM ('add', 'subtract', 'adjust');
+-- Create the ENUM type
+CREATE TYPE action_type AS ENUM ('add', 'sub', 'adj');
 
+-- Create the transaction table
 CREATE TABLE transaction (
                              id SERIAL PRIMARY KEY,
                              created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                              amount DECIMAL(10, 2) NOT NULL,
-                             action ENUM('add', 'subtract', 'adjust') NOT NULL
+                             action action_type NOT NULL
 );
 
+-- Create the label table
 CREATE TABLE label (
                        id SERIAL PRIMARY KEY,
                        key VARCHAR(255) NOT NULL,
                        value VARCHAR(255) NOT NULL,
-                       UNIQUE(key, value) -- Assuming a combination of key and value should be unique.
+                       UNIQUE(key, value)
 );
 
+-- Create the transaction_label table
 CREATE TABLE transaction_label (
                                    transaction_id INT NOT NULL,
                                    label_id INT NOT NULL,

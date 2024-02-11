@@ -38,21 +38,22 @@ func pingHandler(c *gin.Context) {
 // @Tags transactions
 // @Accept json
 // @Produce json
-// @Param transaction body models.Transaction true "Transaction"
+// @Param transaction body models.TransactionRequest true "Create Transaction"
 // @Success 200 {object} models.Transaction
-// @Failure 400 {object} models.ErrorResponse
-// @Failure 500 {object} models.ErrorResponse
+// @Failure 400 {object} models.ErrorResponse "Bad Request"
+// @Failure 500 {object} models.ErrorResponse "Internal Server Error"
 // @Router /transaction [post]
 func createTransaction(c *gin.Context) {
-	var transaction models.Transaction
+	var req models.TransactionRequest
 
-	if err := c.ShouldBindJSON(&transaction); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, models.ErrorResponse{Error: err.Error()})
 		return
 	}
 
-	if err := service.CreateTransaction(&transaction); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create transaction"})
+	transaction, err := service.CreateTransaction(req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ErrorResponse{Error: "Failed to create transaction"})
 		return
 	}
 

@@ -16,3 +16,9 @@ type Transaction struct {
 	Amount    float64    `json:"amount" db:"amount"`
 	Action    ActionType `json:"action" db:"action"`
 }
+
+// TransactionRequest represents the request payload for creating a transaction.
+type TransactionRequest struct {
+	Amount float64    `json:"amount" binding:"required"`
+	Action ActionType `json:"action" binding:"required,oneof=add sub adj"`
+}

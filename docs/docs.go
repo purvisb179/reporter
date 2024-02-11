@@ -56,12 +56,12 @@ const docTemplate = `{
                 "summary": "Create a new transaction",
                 "parameters": [
                     {
-                        "description": "Transaction",
+                        "description": "Create Transaction",
                         "name": "transaction",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Transaction"
+                            "$ref": "#/definitions/models.TransactionRequest"
                         }
                     }
                 ],
@@ -124,6 +124,30 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                }
+            }
+        },
+        "models.TransactionRequest": {
+            "type": "object",
+            "required": [
+                "action",
+                "amount"
+            ],
+            "properties": {
+                "action": {
+                    "enum": [
+                        "add",
+                        "sub",
+                        "adj"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/models.ActionType"
+                        }
+                    ]
+                },
+                "amount": {
+                    "type": "number"
                 }
             }
         }

@@ -37,8 +37,3 @@ var rootCmd = &cobra.Command{
 	Short: "go-ledger",
 	Long:  `go-ledger is a CLI application for managing transactions.`,
 }
-
-func init() {
-	rootCmd.AddCommand(migrateCmd)
-	migrateCmd.AddCommand(upCmd, downCmd)
-}

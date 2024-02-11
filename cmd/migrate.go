@@ -51,7 +51,7 @@ func executeMigrations(direction string) {
 
 	dbURL := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s", dbUser, dbPassword, dbHost, dbPort, dbName, sslMode)
 
-	migrationsPath := "file://internal/migration"
+	migrationsPath := "file://internal/db/migration"
 
 	m, err := migrate.New(migrationsPath, dbURL)
 	if err != nil {

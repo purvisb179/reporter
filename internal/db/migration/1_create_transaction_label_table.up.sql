@@ -3,10 +3,10 @@ CREATE TYPE action_type AS ENUM ('add', 'sub', 'adj');
 
 -- Create the transaction table
 CREATE TABLE transaction (
-                             id SERIAL PRIMARY KEY,
+                             id UUID PRIMARY KEY, -- Using UUID type for the id column
                              created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                             amount DECIMAL(10, 2) NOT NULL,
-                             action action_type NOT NULL
+                             amount INTEGER NOT NULL, -- Changed to INTEGER
+                             action action_type NOT NULL -- Ensure this matches the ENUM definition
 );
 
 -- Create the label table
@@ -19,7 +19,7 @@ CREATE TABLE label (
 
 -- Create the transaction_label table
 CREATE TABLE transaction_label (
-                                   transaction_id INT NOT NULL,
+                                   transaction_id UUID NOT NULL,
                                    label_id INT NOT NULL,
                                    PRIMARY KEY (transaction_id, label_id),
                                    FOREIGN KEY (transaction_id) REFERENCES transaction(id) ON DELETE CASCADE,

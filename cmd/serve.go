@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go-ledger/internal/api"
+	database "go-ledger/internal/db"
 )
 
 // serveCmd represents the serve command
@@ -24,20 +25,22 @@ func init() {
 }
 
 func startServer() {
-	r := gin.Default()
+	// Initialize the database connection
+	database.InitDB()
+	defer database.DB.Close()
 
-	// Use the RegisterRoutes function to set up routes
+	r := gin.Default()
 	api.RegisterRoutes(r)
 
-	// Read the server port from the configuration
+	// Load the server port from the config
 	port := viper.GetString("serverPort")
 	if port == "" {
-		port = "8080" // Default to port 8080 if not specified
+		port = "8080" // Use a default port if not specified
 	}
 	fmt.Printf("Starting server on port %s\n", port)
 
-	// Start the server on the configured port and handle any errors
+	// Start the server
 	if err := r.Run(":" + port); err != nil {
-		fmt.Printf("Error starting server: %s\n", err)
+		fmt.Printf("Error starting server: %v", err)
 	}
 }

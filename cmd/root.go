@@ -22,13 +22,13 @@ func initConfig() {
 	viper.AddConfigPath(".")
 	viper.SetEnvPrefix("GL") // Prefix for environment variables
 	viper.AutomaticEnv()
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			log.Printf("error reading config file: %v", err)
+	err := viper.ReadInConfig()
+	if err != nil {
+		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
+			log.Println("Warning: No config file found. Relying solely on environment variables.")
+		} else {
+			log.Printf("Warning: Error reading config file: %v", err)
 		}
-		log.Println("starting without config.json file")
-	} else {
-		log.Println("using config.json file found on disk")
 	}
 }
 

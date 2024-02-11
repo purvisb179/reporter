@@ -6,6 +6,3 @@ DROP TABLE IF EXISTS label;
 
 -- Drop the transaction table
 DROP TABLE IF EXISTS transaction;
-
--- Finally, drop the action_type ENUM type
-DROP TYPE IF EXISTS action_type;

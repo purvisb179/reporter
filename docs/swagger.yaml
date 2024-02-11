@@ -1,14 +1,4 @@
 definitions:
-  models.ActionType:
-    enum:
-    - add
-    - sub
-    - adj
-    type: string
-    x-enum-varnames:
-    - ActionAdd
-    - ActionSub
-    - ActionAdjust
   models.ErrorResponse:
     properties:
       error:
@@ -16,28 +6,18 @@ definitions:
     type: object
   models.Transaction:
     properties:
-      action:
-        $ref: '#/definitions/models.ActionType'
       amount:
-        type: number
+        type: integer
       created_at:
         type: string
       id:
-        type: integer
+        type: string
     type: object
   models.TransactionRequest:
     properties:
-      action:
-        allOf:
-        - $ref: '#/definitions/models.ActionType'
-        enum:
-        - add
-        - sub
-        - adj
       amount:
-        type: number
+        type: integer
     required:
-    - action
     - amount
     type: object
 info:

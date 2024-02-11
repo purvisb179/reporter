@@ -89,19 +89,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.ActionType": {
-            "type": "string",
-            "enum": [
-                "add",
-                "sub",
-                "adj"
-            ],
-            "x-enum-varnames": [
-                "ActionAdd",
-                "ActionSub",
-                "ActionAdjust"
-            ]
-        },
         "models.ErrorResponse": {
             "type": "object",
             "properties": {
@@ -113,41 +100,25 @@ const docTemplate = `{
         "models.Transaction": {
             "type": "object",
             "properties": {
-                "action": {
-                    "$ref": "#/definitions/models.ActionType"
-                },
                 "amount": {
-                    "type": "number"
+                    "type": "integer"
                 },
                 "created_at": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "string"
                 }
             }
         },
         "models.TransactionRequest": {
             "type": "object",
             "required": [
-                "action",
                 "amount"
             ],
             "properties": {
-                "action": {
-                    "enum": [
-                        "add",
-                        "sub",
-                        "adj"
-                    ],
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/models.ActionType"
-                        }
-                    ]
-                },
                 "amount": {
-                    "type": "number"
+                    "type": "integer"
                 }
             }
         }

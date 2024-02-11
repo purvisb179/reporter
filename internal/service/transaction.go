@@ -17,10 +17,10 @@ func CreateTransaction(req models.TransactionRequest) (*models.Transaction, erro
 	createdAt := time.Now()
 
 	// Prepare the insert statement
-	stmt := `INSERT INTO transaction (id, created_at, amount, action) VALUES ($1, $2, $3, $4)`
+	stmt := `INSERT INTO transaction (id, created_at, amount) VALUES ($1, $2, $3)`
 
 	// Execute the insert operation
-	_, err := database.DB.Exec(stmt, id, createdAt, req.Amount, req.Action)
+	_, err := database.DB.Exec(stmt, id, createdAt, req.Amount)
 	if err != nil {
 		return nil, fmt.Errorf("failed to insert transaction: %w", err)
 	}
@@ -30,6 +30,5 @@ func CreateTransaction(req models.TransactionRequest) (*models.Transaction, erro
 		ID:        id,
 		CreatedAt: createdAt,
 		Amount:    req.Amount,
-		Action:    req.Action,
 	}, nil
 }

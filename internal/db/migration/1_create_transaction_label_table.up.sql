@@ -1,12 +1,8 @@
--- Create the ENUM type
-CREATE TYPE action_type AS ENUM ('add', 'sub', 'adj');
-
 -- Create the transaction table
 CREATE TABLE transaction (
-                             id UUID PRIMARY KEY, -- Using UUID type for the id column
+                             id UUID PRIMARY KEY,
                              created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                             amount INTEGER NOT NULL, -- Changed to INTEGER
-                             action action_type NOT NULL -- Ensure this matches the ENUM definition
+                             amount INTEGER NOT NULL
 );
 
 -- Create the label table

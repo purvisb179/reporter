@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go-ledger/internal/api"
 )
 
 // serveCmd represents the serve command
@@ -25,12 +26,8 @@ func init() {
 func startServer() {
 	r := gin.Default()
 
-	// Define your routes here
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
+	// Use the RegisterRoutes function to set up routes
+	api.RegisterRoutes(r)
 
 	// Read the server port from the configuration
 	port := viper.GetString("serverPort")

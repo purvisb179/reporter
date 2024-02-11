@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "go-ledger/cmd"
 
+func main() {
+	cmd.Execute()
 }

@@ -23,11 +23,11 @@ go_file="main.go"
 mkdir -p $HOME/bin
 
 # Build the Go file
-go build -o $HOME/bin/go-ledger.exe $go_file
+go build -o $HOME/bin/gl.exe $go_file
 
 # If successful, notify the user that the binary is ready
 if [ $? -eq 0 ]; then
-    echo "Build successful. Please run 'go-ledger.exe help'"
+    echo "Build successful. Please run 'gl.exe help'"
 else
     echo "Build failed."
 fi

@@ -39,5 +39,6 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-
+	rootCmd.AddCommand(migrateCmd)
+	migrateCmd.AddCommand(upCmd, downCmd)
 }

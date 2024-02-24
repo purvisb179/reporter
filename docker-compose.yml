@@ -22,6 +22,9 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     command:
       - start-dev
+      - --import-realm
+    volumes:
+      - ./import-realm.json:/opt/keycloak/data/import/import-realm.json
     depends_on:
       - postgresql
 

@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"reporter/internal/api"
 	database "reporter/internal/db"
+	"reporter/internal/service"
 )
 
 // serveCmd represents the serve command
@@ -29,8 +31,17 @@ func startServer() {
 	database.InitDB()
 	defer database.DB.Close()
 
+	ctx := context.Background()
+
+	providerURL := viper.GetString("oidc.provider_url")
+	clientID := viper.GetString("oidc.client_id")
+	clientSecret := viper.GetString("oidc.client_secret")
+	redirectURL := viper.GetString("oidc.redirect_url")
+
+	oidcService := service.NewOIDCService(ctx, providerURL, clientID, clientSecret, redirectURL)
+
 	r := gin.Default()
-	api.RegisterRoutes(r)
+	api.RegisterRoutes(r, oidcService)
 
 	// Load the server port from the config
 	port := viper.GetString("serverPort")

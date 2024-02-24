@@ -1,0 +1,44 @@
+{
+  "id": "your-realm",
+  "realm": "your-realm",
+  "enabled": true,
+  "sslRequired": "external",
+  "accessTokenLifespan": 1800,
+  "accessTokenLifespanForImplicitFlow": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "clients": [
+    {
+      "clientId": "your-client-id",
+      "name": "Your Application Name",
+      "baseUrl": "http://localhost:8888",
+      "adminUrl": "http://localhost:8888",
+      "redirectUris": [
+        "http://localhost:8888/callback",
+        "http://localhost:8888/*"
+      ],
+      "webOrigins": [
+        "+"
+      ],
+      "protocol": "openid-connect",
+      "enabled": true,
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "your-client-secret",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "fullScopeAllowed": true,
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      }
+    }
+  ],
+  "users": [],
+  "roles": {
+    "realm": []
+  },
+  "groups": []
+}

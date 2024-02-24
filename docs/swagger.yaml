@@ -1,25 +1,3 @@
-definitions:
-  models.ErrorResponse:
-    properties:
-      error:
-        type: string
-    type: object
-  models.Transaction:
-    properties:
-      amount:
-        type: integer
-      created_at:
-        type: string
-      id:
-        type: string
-    type: object
-  models.TransactionRequest:
-    properties:
-      amount:
-        type: integer
-    required:
-    - amount
-    type: object
 info:
   contact: {}
 paths:
@@ -40,34 +18,4 @@ paths:
       summary: Pong
       tags:
       - example
-  /transaction:
-    post:
-      consumes:
-      - application/json
-      description: Adds a new transaction to the database
-      parameters:
-      - description: Create Transaction
-        in: body
-        name: transaction
-        required: true
-        schema:
-          $ref: '#/definitions/models.TransactionRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Transaction'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.ErrorResponse'
-      summary: Create a new transaction
-      tags:
-      - transactions
 swagger: "2.0"

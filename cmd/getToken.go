@@ -1,10 +1,10 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -52,12 +52,22 @@ func getToken() {
 	}
 	defer resp.Body.Close()
 
-	// Read the response
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error reading response:", err)
+	// Read and parse the response
+	var tokenResp struct {
+		AccessToken string `json:"access_token"`
+		TokenType   string `json:"token_type"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&tokenResp); err != nil {
+		fmt.Println("Error decoding response:", err)
 		return
 	}
 
-	fmt.Printf("Response: %s\n", body)
+	// Check if the access token is present
+	if tokenResp.AccessToken == "" {
+		fmt.Println("No access token found in the response")
+		return
+	}
+
+	// Print the bearer token in the Authorization header format
+	fmt.Printf("Authorization: Bearer %s\n", tokenResp.AccessToken)
 }

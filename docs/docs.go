@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/ping": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "get a pong response",
                 "consumes": [
                     "application/json"
@@ -40,6 +45,13 @@ const docTemplate = `{
                     }
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

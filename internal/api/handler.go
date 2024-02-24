@@ -1,3 +1,7 @@
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
 package api
 
 import (
@@ -12,6 +16,7 @@ import (
 // @Tags example
 // @Accept  json
 // @Produce  json
+// @Security BearerAuth
 // @Success 200 {object} map[string]string
 // @Router /ping [get]
 func pingHandler(c *gin.Context) {

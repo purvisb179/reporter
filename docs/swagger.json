@@ -6,6 +6,11 @@
     "paths": {
         "/ping": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "get a pong response",
                 "consumes": [
                     "application/json"
@@ -29,6 +34,13 @@
                     }
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

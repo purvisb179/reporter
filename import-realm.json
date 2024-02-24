@@ -11,29 +11,64 @@
     {
       "clientId": "your-client-id",
       "name": "Your Application Name",
-      "baseUrl": "http://localhost:8888",
       "adminUrl": "http://localhost:8888",
+      "baseUrl": "http://localhost:8888",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "your-client-secret",
       "redirectUris": [
-        "http://localhost:8888/callback",
-        "http://localhost:8888/*"
+        "http://localhost:8888/*",
+        "http://localhost:8888/callback"
       ],
       "webOrigins": [
         "+"
       ],
-      "protocol": "openid-connect",
-      "enabled": true,
-      "publicClient": false,
-      "clientAuthenticatorType": "client-secret",
-      "secret": "your-client-secret",
-      "directAccessGrantsEnabled": true,
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
       "standardFlowEnabled": true,
       "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "protocol": "openid-connect",
+      "attributes": {
+        "post.logout.redirect.uris": "+",
+        "oauth2.device.authorization.grant.enabled": false,
+        "oidc.ciba.grant.enabled": false,
+        "login_theme": "",
+        "display.on.consent.screen": false,
+        "backchannel.logout.url": "",
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.revoke.offline.tokens": "false"
+      },
+      "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "profile",
+        "roles",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ],
       "access": {
         "view": true,
         "configure": true,
         "manage": true
-      }
+      },
+      "description": "",
+      "rootUrl": "",
+      "authorizationServicesEnabled": false
     }
   ],
   "users": [],

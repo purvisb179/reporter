@@ -13,6 +13,7 @@ type OIDCService struct {
 	Verifier *oidc.IDTokenVerifier
 	Config   oauth2.Config
 	ctx      context.Context
+	ClientId string
 }
 
 // NewOIDCService creates a new OIDCService with the specified parameters.
@@ -40,6 +41,7 @@ func NewOIDCService(ctx context.Context, providerURL, clientID, clientSecret str
 		Verifier: verifier,
 		Config:   config,
 		ctx:      ctx,
+		ClientId: clientID,
 	}
 }
 

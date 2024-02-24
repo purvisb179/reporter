@@ -1,11 +1,12 @@
 package api
 
 import (
-	"net/http"
-	"strings"
-
+	"context"
+	"github.com/coreos/go-oidc/v3/oidc"
 	"github.com/gin-gonic/gin"
-	"reporter/internal/service" // Adjust the import path according to your project structure
+	"net/http"
+	"reporter/internal/service"
+	"strings"
 )
 
 // OIDCAuthMiddleware creates a new Gin middleware for OIDC authentication
@@ -26,14 +27,50 @@ func OIDCAuthMiddleware(oidcService *service.OIDCService) gin.HandlerFunc {
 		}
 		rawToken := parts[1]
 
-		// Verify the token with the OIDC service
-		_, err := oidcService.VerifyToken(rawToken)
+		// Prepare for custom audience validation
+		ctx := context.Background()
+		verifier := oidcService.Provider.Verifier(&oidc.Config{ClientID: "", SkipClientIDCheck: true})
+		idToken, err := verifier.Verify(ctx, rawToken)
 		if err != nil {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Failed to verify token"})
+			return
+		}
+
+		// Decode the token claims for custom audience validation
+		var claims struct {
+			Audience interface{} `json:"aud"`
+			Azp      string      `json:"azp"`
+		}
+		if err := idToken.Claims(&claims); err != nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Failed to parse token claims"})
+			return
+		}
+
+		clientID := oidcService.ClientId
+		if !validateAudience(claims, clientID) {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid audience"})
 			return
 		}
 
 		// Token is valid; proceed with the request
 		c.Next()
 	}
+}
+
+// validateAudience checks if the aud claim contains the clientID or if azp matches the clientID
+func validateAudience(claims struct {
+	Audience interface{} `json:"aud"`
+	Azp      string      `json:"azp"`
+}, clientID string) bool {
+	switch aud := claims.Audience.(type) {
+	case string:
+		return aud == clientID || claims.Azp == clientID
+	case []interface{}:
+		for _, a := range aud {
+			if str, ok := a.(string); ok && (str == clientID || claims.Azp == clientID) {
+				return true
+			}
+		}
+	}
+	return false
 }

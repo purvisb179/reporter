@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "go-ledger/docs"
-	"go-ledger/internal/service"
-	"go-ledger/pkg/models"
 	"net/http"
+	_ "reporter/docs"
+	"reporter/internal/service"
+	"reporter/pkg/models"
 )
 
 // RegisterRoutes registers all the routes for your application.

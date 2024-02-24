@@ -3,8 +3,8 @@ package service
 import (
 	"fmt"
 	"github.com/google/uuid"
-	database "go-ledger/internal/db"
-	"go-ledger/pkg/models"
+	database "reporter/internal/db"
+	"reporter/pkg/models"
 	"time"
 )
 

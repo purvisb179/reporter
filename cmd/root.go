@@ -20,7 +20,7 @@ func initConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 	viper.AddConfigPath(".")
-	viper.SetEnvPrefix("GL") // Prefix for environment variables
+	viper.SetEnvPrefix("RE") // Prefix for environment variables
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -33,7 +33,7 @@ func initConfig() {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "gl",
-	Short: "go-ledger",
-	Long:  `go-ledger is a CLI application for managing transactions.`,
+	Use:   "re",
+	Short: "reporter",
+	Long:  `reporter is a service for handling the creation of reports`,
 }

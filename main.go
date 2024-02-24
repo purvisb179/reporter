@@ -1,6 +1,6 @@
 package main
 
-import "go-ledger/cmd"
+import "reporter/cmd"
 
 func main() {
 	cmd.Execute()

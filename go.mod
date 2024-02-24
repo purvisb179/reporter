@@ -1,4 +1,4 @@
-module go-ledger
+module reporter
 
 go 1.20
 

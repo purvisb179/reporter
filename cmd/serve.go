@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"go-ledger/internal/api"
-	database "go-ledger/internal/db"
+	"reporter/internal/api"
+	database "reporter/internal/db"
 )
 
 // serveCmd represents the serve command

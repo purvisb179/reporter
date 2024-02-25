@@ -39,6 +39,10 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService, reportServi
 			downloadReportHandler(c, reportService)
 		})
 
+		protected.GET("/ping", func(c *gin.Context) {
+			pingHandler(c)
+		})
+
 		protected.GET("/", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "index.html", nil)
 		})

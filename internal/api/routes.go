@@ -39,12 +39,25 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService) {
 	protected := r.Group("/")
 	protected.Use(OIDCAuthMiddleware(oidcService))
 	{
-		// Example of a protected route
+		// Serve the main page
 		protected.GET("/home", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "index.html", gin.H{
 				"Title":         "Reporter",
 				"DropdownItems": []string{"Item 1", "Item 2", "Item 3"},
 			})
+		})
+
+		// Serve HTML content for tabs in the protected group
+		protected.GET("/content/item1", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "item1.html", nil)
+		})
+
+		protected.GET("/content/item2", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "item2.html", nil)
+		})
+
+		protected.GET("/content/item3", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "item3.html", nil)
 		})
 
 		protected.GET("/ping", pingHandler)

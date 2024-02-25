@@ -13,6 +13,9 @@
             background-color: #f7f7f7;
             color: #333;
         }
+        h1 {
+            text-align: center;
+        }
         .container {
             max-width: 800px;
             margin: 40px auto;
@@ -23,11 +26,14 @@
         }
         .tabs {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             list-style-type: none;
             padding: 0;
             border-bottom: 2px solid #eee;
             margin-bottom: 20px;
+        }
+        .tabs li {
+            margin-right: 10px;
         }
         .tabs li a {
             padding: 10px 20px;
@@ -54,7 +60,7 @@
             position: fixed;
             bottom: 20px;
             left: 20px;
-            background-color: #0056b3;
+            background-color: #4A90E2; /* Lighter blue */
             color: white;
             border: none;
             padding: 10px 20px;
@@ -64,7 +70,7 @@
             z-index: 1000;
         }
         .fixed-button:hover {
-            background-color: #003d82;
+            background-color: #357ABD; /* Slightly darker blue on hover */
         }
         .tooltip {
             visibility: hidden;

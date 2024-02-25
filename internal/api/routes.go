@@ -47,9 +47,6 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService) {
 			})
 		})
 
-		// Another example of a protected route
-		protected.GET("/ping", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"message": "pong"})
-		})
+		protected.GET("/ping", pingHandler)
 	}
 }

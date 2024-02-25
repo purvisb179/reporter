@@ -23,7 +23,7 @@ import (
 // @Router /ping [get]
 func pingHandler(c *gin.Context) {
 	c.JSON(200, gin.H{
-		"message": "pong",
+		"message": "Pong!",
 	})
 }
 

@@ -1,3 +1,5 @@
+# examples - make sure to change
+
 name: "reporter"
 baseDomain: "example.com"
 image:

@@ -45,6 +45,34 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/reports/download": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Downloads an Excel report containing transactions and their associated labels.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                ],
+                "tags": [
+                    "reports"
+                ],
+                "summary": "Download Report",
+                "responses": {
+                    "200": {
+                        "description": "Excel report",
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                }
+            }
         }
     },
     "securityDefinitions": {

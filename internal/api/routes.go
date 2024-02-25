@@ -11,7 +11,7 @@ import (
 	"reporter/internal/service"
 )
 
-func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService) {
+func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService, reportService *service.ReportService) {
 	// Initialize session middleware using a cookie-based store for simplicity.
 	store := cookie.NewStore([]byte("secret"))
 	r.Use(sessions.Sessions("mysession", store))
@@ -61,5 +61,9 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService) {
 		})
 
 		protected.GET("/ping", pingHandler)
+
+		protected.GET("/reports/download", func(c *gin.Context) {
+			downloadReportHandler(c, reportService)
+		})
 	}
 }

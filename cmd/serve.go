@@ -40,9 +40,11 @@ func startServer() {
 
 	oidcService := service.NewOIDCService(ctx, providerURL, clientID, clientSecret, redirectURL)
 
+	reportService := service.NewReportService(database.DB)
+
 	r := gin.Default()
 
-	api.RegisterRoutes(r, oidcService)
+	api.RegisterRoutes(r, oidcService, reportService)
 
 	// Load the server port from the config
 	port := viper.GetString("serverPort")

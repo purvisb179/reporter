@@ -27,6 +27,41 @@ func pingHandler(c *gin.Context) {
 	})
 }
 
+// downloadReportHandler streams an Excel report to the client, prompting a file download.
+// This handler generates a report based on transactions and their labels, then returns the report
+// as an Excel file. The Content-Disposition header suggests to the client that the response
+// should be downloaded and saved as a file.
+//
+// @Summary Download Report
+// @Description Downloads an Excel report containing transactions and their associated labels.
+// @Tags reports
+// @Accept  json
+// @Produce  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+// @Security BearerAuth
+// @Success 200 {file} file "Excel report"
+// @Router /reports/download [get]
+func downloadReportHandler(c *gin.Context, reportService *service.ReportService) {
+	// Generate the report
+	report, err := reportService.GenerateReport()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate report"})
+		return
+	}
+
+	// Set headers to instruct the browser to download the file
+	c.Header("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	c.Header("Content-Disposition", "attachment; filename=report.xlsx")
+
+	// Write the Excel file to the response
+	err = report.Write(c.Writer)
+	if err != nil {
+		// Log the error and return a server error response
+		// In production, avoid sending the error message directly to the client for security reasons
+		c.Status(http.StatusInternalServerError)
+		return
+	}
+}
+
 func callbackHandler(c *gin.Context, oidcService *service.OIDCService) {
 	// Extract the authorization code and state from the query parameters
 	code := c.Query("code")

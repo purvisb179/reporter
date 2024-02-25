@@ -39,24 +39,21 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService, reportServi
 			downloadReportHandler(c, reportService)
 		})
 
-		protected.GET("/home", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "layout.html", gin.H{
-				"Title":   "Reporter Home",
-				"Content": "This is the home page content.",
-			})
-		})
-
-		protected.GET("/content/item1", func(c *gin.Context) {
+		protected.GET("/item1", func(c *gin.Context) {
 			labelValues, err := reportService.GetDistinctLabelValues()
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve label values"})
 				return
 			}
-			c.HTML(http.StatusOK, "layout.html", gin.H{
+			c.HTML(http.StatusOK, "item1.html", gin.H{
 				"Title":   "Item 1",
 				"Content": "This is the content for Item 1.",
-				"Labels":  labelValues, // Assuming you adapt your layout to iterate and display these
+				"Labels":  labelValues,
 			})
+		})
+
+		protected.GET("/item2", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "item2.html", nil)
 		})
 	}
 }

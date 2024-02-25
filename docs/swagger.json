@@ -53,6 +53,18 @@
                     "reports"
                 ],
                 "summary": "Download Report",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "Array of labels to filter the report by",
+                        "name": "labels",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Excel report",

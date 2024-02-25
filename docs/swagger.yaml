@@ -26,6 +26,14 @@ paths:
       - application/json
       description: Downloads an Excel report containing transactions and their associated
         labels.
+      parameters:
+      - collectionFormat: csv
+        description: Array of labels to filter the report by
+        in: query
+        items:
+          type: string
+        name: labels
+        type: array
       produces:
       - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
       responses:

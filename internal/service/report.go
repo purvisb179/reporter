@@ -3,6 +3,7 @@ package service
 import (
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/tealeg/xlsx"
@@ -17,8 +18,8 @@ func NewReportService(db *sql.DB) *ReportService {
 }
 
 // GenerateReport generates an Excel report for transactions and their labels.
-func (rs *ReportService) GenerateReport() (*xlsx.File, error) {
-	// Define the SQL query
+func (rs *ReportService) GenerateReport(labels []string) (*xlsx.File, error) {
+	// Start with the base SQL query
 	query := `
 SELECT t.amount, l.value, t.created_at
 FROM transaction t
@@ -26,14 +27,33 @@ JOIN transaction_label tl ON t.id = tl.transaction_id
 JOIN label l ON tl.label_id = l.id
 `
 
-	// Execute the query
-	rows, err := rs.DB.Query(query)
+	// Modify the query to filter by labels if they are provided
+	var params []interface{}
+	if len(labels) > 0 {
+		// PostgreSQL uses numbered placeholders, e.g., $1, $2, etc.
+		placeholder := make([]string, len(labels))
+		for i := range labels {
+			placeholder[i] = fmt.Sprintf("$%d", i+1)
+			params = append(params, labels[i])
+		}
+		query += " WHERE l.value IN (" + strings.Join(placeholder, ",") + ")"
+	}
+
+	// Prepare the query with parameters to avoid SQL injection
+	stmt, err := rs.DB.Prepare(query)
+	if err != nil {
+		return nil, fmt.Errorf("prepare statement error: %w", err)
+	}
+	defer stmt.Close()
+
+	// Execute the query with parameters
+	rows, err := stmt.Query(params...)
 	if err != nil {
 		return nil, fmt.Errorf("query execution error: %w", err)
 	}
 	defer rows.Close()
 
-	// Create a new Excel file
+	// Create a new Excel file and a sheet
 	file := xlsx.NewFile()
 	sheet, err := file.AddSheet("Report")
 	if err != nil {
@@ -59,7 +79,7 @@ JOIN label l ON tl.label_id = l.id
 			return nil, fmt.Errorf("failed to scan row: %w", err)
 		}
 
-		// Add a new row to the sheet for each record
+		// Add rows to the sheet for each record
 		row := sheet.AddRow()
 		row.AddCell().SetInt(amount)
 		row.AddCell().SetValue(value)

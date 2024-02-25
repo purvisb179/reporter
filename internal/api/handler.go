@@ -38,11 +38,14 @@ func pingHandler(c *gin.Context) {
 // @Accept  json
 // @Produce  application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
 // @Security BearerAuth
+// @Param labels query []string false "Array of labels to filter the report by"
 // @Success 200 {file} file "Excel report"
 // @Router /reports/download [get]
 func downloadReportHandler(c *gin.Context, reportService *service.ReportService) {
-	// Generate the report
-	report, err := reportService.GenerateReport()
+	labels := c.QueryArray("labels")
+
+	// Generate the report with labels
+	report, err := reportService.GenerateReport(labels)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate report"})
 		return
@@ -55,8 +58,6 @@ func downloadReportHandler(c *gin.Context, reportService *service.ReportService)
 	// Write the Excel file to the response
 	err = report.Write(c.Writer)
 	if err != nil {
-		// Log the error and return a server error response
-		// In production, avoid sending the error message directly to the client for security reasons
 		c.Status(http.StatusInternalServerError)
 		return
 	}

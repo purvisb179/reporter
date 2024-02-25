@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"reporter/internal/service"
+	"reporter/pkg/models"
 	"strings"
 )
 
@@ -37,17 +38,13 @@ func OIDCAuthMiddleware(oidcService *service.OIDCService) gin.HandlerFunc {
 		}
 
 		// Decode the token claims for custom audience validation
-		var claims struct {
-			Audience interface{} `json:"aud"`
-			Azp      string      `json:"azp"`
-		}
-		if err := idToken.Claims(&claims); err != nil {
+		if err := idToken.Claims(&models.Claims); err != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Failed to parse token claims"})
 			return
 		}
 
 		clientID := oidcService.ClientId
-		if !validateAudience(claims, clientID) {
+		if !validateAudience(models.Claims, clientID) {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid audience"})
 			return
 		}

@@ -3,8 +3,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -43,9 +41,6 @@ func startServer() {
 	oidcService := service.NewOIDCService(ctx, providerURL, clientID, clientSecret, redirectURL)
 
 	r := gin.Default()
-
-	store := cookie.NewStore([]byte("secret"))
-	r.Use(sessions.Sessions("mysession", store))
 
 	api.RegisterRoutes(r, oidcService)
 

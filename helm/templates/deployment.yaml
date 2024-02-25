@@ -1,0 +1,31 @@
+spec:
+  containers:
+    - name: {{ .Chart.Name }}
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+      env:
+        - name: RE_SERVERPORT
+          value: "{{ .Values.serverPort }}"
+        - name: RE_DATABASE_HOST
+          value: "{{ .Values.database.host }}"
+        - name: RE_DATABASE_PORT
+          value: "{{ .Values.database.port }}"
+        - name: RE_DATABASE_USER
+          value: "{{ .Values.database.user }}"
+        - name: RE_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.name }}-secret
+              key: database-password
+        - name: RE_DATABASE_DBNAME
+          value: "{{ .Values.database.dbname }}"
+        - name: RE_OIDC_PROVIDER_URL
+          value: "{{ .Values.oidc.provider_url }}"
+        - name: RE_OIDC_CLIENT_ID
+          value: "{{ .Values.oidc.client_id }}"
+        - name: RE_OIDC_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.name }}-secret
+              key: oidc-client-secret
+        - name: RE_OIDC_REDIRECT_URL
+          value: "{{ .Values.oidc.redirect_url }}"

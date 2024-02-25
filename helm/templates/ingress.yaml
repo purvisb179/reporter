@@ -1,0 +1,9 @@
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: {{ .Values.name }}-golang-bin-proxy
+spec:
+  virtualhost:
+    fqdn: {{ .Values.name }}.{{ .Values.baseDomain }}
+    tls:
+      secretName: {{ .Values.name }}-secret

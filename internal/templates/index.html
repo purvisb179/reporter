@@ -1,4 +1,92 @@
-{{ define "body" }}
-<h1>Welcome to Our Site</h1>
-<p>This is a sample page served from Gin with Go templating.</p>
-{{ end }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            outline: none;
+        }
+        #content {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>{{.Title}}</h1>
+    <p>Select an item:</p>
+    <select id="dropdown">
+        {{range $index, $value := .DropdownItems}}
+        {{if eq $index 0}}
+        <option value="{{$value}}" selected>{{$value}}</option>
+        {{else}}
+        <option value="{{$value}}">{{$value}}</option>
+        {{end}}
+        {{end}}
+    </select>
+    <div id="content"></div>
+</div>
+
+<script>
+    document.getElementById('dropdown').addEventListener('change', function() {
+        var selectedItem = this.value;
+        var contentDiv = document.getElementById('content');
+        // Clear previous content
+        contentDiv.innerHTML = '';
+
+        // Add content based on selected item
+        switch(selectedItem) {
+            case 'Item 1':
+                contentDiv.innerHTML = '<p>This is content for Item 1.</p>';
+                break;
+            case 'Item 2':
+                contentDiv.innerHTML = '<p>This is content for Item 2.</p>';
+                break;
+            case 'Item 3':
+                contentDiv.innerHTML = '<p>This is content for Item 3.</p>';
+                break;
+            default:
+                contentDiv.innerHTML = '<p>No content available.</p>';
+        }
+    });
+
+    // Trigger change event on page load to display content for the default selected item
+    document.getElementById('dropdown').dispatchEvent(new Event('change'));
+</script>
+</body>
+</html>

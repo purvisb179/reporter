@@ -30,8 +30,9 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService) {
 
 	// Serve HTML route
 	r.GET("/home", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "layout.html", gin.H{
-			"Title": "Home Page",
+		c.HTML(http.StatusOK, "index.html", gin.H{
+			"Title":         "Dropdown Example",
+			"DropdownItems": []string{"Item 1", "Item 2", "Item 3"},
 		})
 	})
 }

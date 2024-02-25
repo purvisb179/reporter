@@ -31,7 +31,7 @@ func callbackHandler(c *gin.Context, oidcService *service.OIDCService) {
 	// Extract the authorization code and state from the query parameters
 	code := c.Query("code")
 	//state := c.Query("state")
-	// todo: Verify the state matches the one stored in the session or passed initially for CSRF protection
+	//todo Verify the state matches the one stored in the session or passed initially for CSRF protection
 
 	if code == "" {
 		// No code was found; handle the error appropriately

@@ -79,7 +79,7 @@
 </div>
 
 <script>
-    document.getElementById('dropdown').addEventListener('change', function() {
+    document.getElementById('dropdown').addEventListener('change', async function() {
         var selectedItem = this.value;
         var contentDiv = document.getElementById('content');
         // Clear previous content
@@ -91,7 +91,19 @@
                 contentDiv.innerHTML = '<p>This is content for Item 1.</p>';
                 break;
             case 'Item 2':
-                contentDiv.innerHTML = '<p>This is content for Item 2.</p>';
+                // Make a call to the "pong" route
+                try {
+                    const response = await fetch('/ping');
+                    if (response.ok) {
+                        const data = await response.json();
+                        contentDiv.innerHTML = `<p>Server says: ${data.message}</p>`;
+                    } else {
+                        contentDiv.innerHTML = '<p>Error contacting server for Item 2.</p>';
+                    }
+                } catch (error) {
+                    console.error('Fetch error: ', error);
+                    contentDiv.innerHTML = '<p>Error contacting server for Item 2.</p>';
+                }
                 break;
             case 'Item 3':
                 contentDiv.innerHTML = '<p>This is content for Item 3.</p>';
@@ -104,5 +116,6 @@
     // Trigger change event on page load to display content for the default selected item
     document.getElementById('dropdown').dispatchEvent(new Event('change'));
 </script>
+
 </body>
 </html>

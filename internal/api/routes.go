@@ -42,7 +42,7 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService) {
 		// Example of a protected route
 		protected.GET("/home", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "index.html", gin.H{
-				"Title":         "Protected Page",
+				"Title":         "Reporter",
 				"DropdownItems": []string{"Item 1", "Item 2", "Item 3"},
 			})
 		})

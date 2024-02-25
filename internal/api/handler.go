@@ -120,5 +120,5 @@ func callbackHandler(c *gin.Context, oidcService *service.OIDCService) {
 	}
 
 	// Redirect the user to the home page or another target page
-	c.Redirect(http.StatusSeeOther, "/home")
+	c.Redirect(http.StatusSeeOther, "/")
 }

@@ -45,12 +45,20 @@ func NewOIDCService(ctx context.Context, providerURL, clientID, clientSecret str
 	}
 }
 
-// VerifyToken verifies the OIDC token and returns the claims.
-func (s *OIDCService) VerifyToken(token string) (*oidc.IDToken, error) {
-	// Parse and verify the ID token payload
-	idToken, err := s.Verifier.Verify(s.ctx, token)
-	if err != nil {
-		return nil, err
+// ValidateAudience checks if the aud claim contains the clientID or if azp matches the clientID
+func (s *OIDCService) ValidateAudience(claims struct {
+	Audience interface{} `json:"aud"`
+	Azp      string      `json:"azp"`
+}) bool {
+	switch aud := claims.Audience.(type) {
+	case string:
+		return aud == s.ClientId || claims.Azp == s.ClientId
+	case []interface{}:
+		for _, a := range aud {
+			if str, ok := a.(string); ok && (str == s.ClientId || claims.Azp == s.ClientId) {
+				return true
+			}
+		}
 	}
-	return idToken, nil
+	return false
 }

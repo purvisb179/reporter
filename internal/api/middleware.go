@@ -43,8 +43,7 @@ func OIDCAuthMiddleware(oidcService *service.OIDCService) gin.HandlerFunc {
 			return
 		}
 
-		clientID := oidcService.ClientId
-		if !validateAudience(models.Claims, clientID) {
+		if !oidcService.ValidateAudience(models.Claims) {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid audience"})
 			return
 		}
@@ -52,22 +51,4 @@ func OIDCAuthMiddleware(oidcService *service.OIDCService) gin.HandlerFunc {
 		// Token is valid; proceed with the request
 		c.Next()
 	}
-}
-
-// validateAudience checks if the aud claim contains the clientID or if azp matches the clientID
-func validateAudience(claims struct {
-	Audience interface{} `json:"aud"`
-	Azp      string      `json:"azp"`
-}, clientID string) bool {
-	switch aud := claims.Audience.(type) {
-	case string:
-		return aud == clientID || claims.Azp == clientID
-	case []interface{}:
-		for _, a := range aud {
-			if str, ok := a.(string); ok && (str == clientID || claims.Azp == clientID) {
-				return true
-			}
-		}
-	}
-	return false
 }

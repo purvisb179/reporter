@@ -1,5 +1,5 @@
 # Stage 1: build the Go binary
-FROM golang:1.20 as builder
+FROM --platform=linux/amd64 golang:1.20 as builder
 
 WORKDIR /app
 
@@ -10,11 +10,12 @@ RUN go mod download
 # Copy the rest of the source code
 COPY . .
 
-# Build the binary
-RUN CGO_ENABLED=0 GOOS=linux go build -o myapp main.go
+# Build the binary with GOARCH=amd64 to target AMD architecture
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o myapp main.go
 
 # Stage 2: copy the Go binary to an Alpine container and update certs
-FROM alpine:latest
+# Using --platform=linux/amd64 ensures the Alpine image is suitable for AMD64 architecture
+FROM --platform=linux/amd64 alpine:latest
 
 # Update certificates in Alpine
 RUN apk --no-cache add ca-certificates
@@ -28,4 +29,4 @@ COPY --from=builder /app/myapp /app/myapp
 COPY --from=builder /app/internal/templates /app/internal/templates
 
 # The command to start the app
-CMD ["/app/myapp"]
+CMD ["/app/myapp", "serve"]

@@ -39,6 +39,10 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService, reportServi
 			downloadReportHandler(c, reportService)
 		})
 
+		protected.GET("/", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "index.html", nil)
+		})
+
 		protected.GET("/item1", func(c *gin.Context) {
 			labelValues, err := reportService.GetDistinctLabelValues()
 			if err != nil {

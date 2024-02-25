@@ -47,9 +47,17 @@ func RegisterRoutes(r *gin.Engine, oidcService *service.OIDCService, reportServi
 			})
 		})
 
-		// Serve HTML content for tabs in the protected group
 		protected.GET("/content/item1", func(c *gin.Context) {
-			c.HTML(http.StatusOK, "item1.html", nil)
+			labelValues, err := reportService.GetDistinctLabelValues()
+			if err != nil {
+				// Handle the error appropriately, maybe return an HTTP error
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve label values"})
+				return
+			}
+			// Pass the label values to the template
+			c.HTML(http.StatusOK, "item1.html", gin.H{
+				"labels": labelValues,
+			})
 		})
 
 		protected.GET("/content/item2", func(c *gin.Context) {

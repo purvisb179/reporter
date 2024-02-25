@@ -74,3 +74,36 @@ JOIN label l ON tl.label_id = l.id
 	// Return the generated Excel file
 	return file, nil
 }
+
+// GetDistinctLabelValues retrieves a distinct list of label values from the labels table.
+func (rs *ReportService) GetDistinctLabelValues() ([]string, error) {
+	// Define the SQL query to select distinct label values
+	query := `SELECT DISTINCT value FROM label ORDER BY value;`
+
+	// Execute the query
+	rows, err := rs.DB.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("query execution error: %w", err)
+	}
+	defer rows.Close()
+
+	// Slice to hold the distinct label values
+	var values []string
+
+	// Iterate through the query results
+	for rows.Next() {
+		var value string
+		if err := rows.Scan(&value); err != nil {
+			return nil, fmt.Errorf("failed to scan row: %w", err)
+		}
+		values = append(values, value)
+	}
+
+	// Check for errors from iterating over rows
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("rows iteration error: %w", err)
+	}
+
+	// Return the distinct label values
+	return values, nil
+}

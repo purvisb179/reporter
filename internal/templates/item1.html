@@ -35,6 +35,12 @@
 <h2>Item 1 Content</h2>
 <p>This is the content for Item 1.</p>
 
+<ul>
+    {{ range .labels }}
+    <li>{{ . }}</li>
+    {{ end }}
+</ul>
+
 <!-- Button to download the report -->
 <a href="/reports/download" class="download-button">Download Report</a>
 

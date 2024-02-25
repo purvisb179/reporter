@@ -4,40 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item 1 Content</title>
-    <!-- No need for the CSS here if it's already included in layout.html -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        .download-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Item 1 Content</h2>
-<p>This is the content for Item 1.</p>
+<div class="card">
+    <h2>Item 1 Content</h2>
+    <p>This is the content for Item 1.</p>
 
-<!-- Your form and its content -->
-<form id="label-form">
-    {{ range .Labels }}
-    <div>
-        <input type="checkbox" id="label-{{ . }}" name="labels" value="{{ . }}">
-        <label for="label-{{ . }}">{{ . }}</label>
-    </div>
-    {{ end }}
-    <button type="button" class="download-button" id="downloadReportButton">Download Report</button>
-</form>
+    <form id="label-form">
+        {{ range .Labels }}
+            <div class="form-group">
+                <input type="checkbox" id="label-{{ . }}" name="labels" value="{{ . }}">
+                <label for="label-{{ . }}">{{ . }}</label>
+            </div>
+        {{ end }}
+        <button type="button" class="download-button" id="downloadReportButton">Download Report</button>
+    </form>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Define the submitForm function here if it's not already defined
         function submitForm() {
             const form = document.getElementById('label-form');
             const checkboxes = form.querySelectorAll('input[name="labels"]:checked');
             let queryParams = Array.from(checkboxes).map(checkbox => `labels=${encodeURIComponent(checkbox.value)}`).join('&');
 
-            // Construct the download URL with query parameters
             const downloadUrl = `/reports/download?${queryParams}`;
-
-            // Navigate to the download URL
             window.location.href = downloadUrl;
         }
 
-        // Attach the submitForm function to the "Download Report" button click event
         document.getElementById('downloadReportButton').addEventListener('click', submitForm);
     });
 </script>

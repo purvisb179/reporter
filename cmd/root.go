@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"os"
+	"strings"
 )
 
 func Execute() {
@@ -20,7 +21,8 @@ func initConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("json")
 	viper.AddConfigPath(".")
-	viper.SetEnvPrefix("RE") // Prefix for environment variables
+	viper.SetEnvPrefix("RE")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "__"))
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
